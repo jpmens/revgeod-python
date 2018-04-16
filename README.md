@@ -33,7 +33,7 @@ devicetime: 2018-04-16 20:52:29
   altitude: 0
      speed: 0
     course: 0
-   address: La Tuilerie, 51190 Oger, France
+   address: La Tuilerie, 51190 Oger, France     ◄ 
 attributes: {"batteryLevel":11,"distance":0.0,"totalDistance":6342542.38,"motion":false}
   accuracy: 0
    network: null
@@ -50,7 +50,7 @@ devicetime: 2018-04-16 20:52:54
   altitude: 0
      speed: 0
     course: 0
-   address: {ghash:u0dydb}
+   address: {ghash:u0dydb}    ◄ 
 attributes: {"batteryLevel":11,"distance":0.0,"totalDistance":6342542.38,"motion":false}
   accuracy: 0
    network: null
