@@ -13,7 +13,7 @@ import paho.mqtt.publish as mqtt
 from creds import *
 
 reverse_timeout = 4
-precision = 6
+precision = 7
 
 bottle.debug(True)
 
@@ -33,6 +33,7 @@ def rev():
 
 
     raw = None
+    cached = False
     key = 'ghash:%s' % (geohash)
     val = r.get(key)
     print key, val
@@ -55,6 +56,7 @@ def rev():
     else:
         raw = json.loads(val)
         if raw:
+            cached = True
             village = raw
         else:
             village = "{%s}" % (key)    # enclose in curly braces so that users *see* it's a token
@@ -63,8 +65,12 @@ def rev():
         'village' : village,
     }
 
+    ca = "N"
+    if cached:
+        ca = "Y"
     raw = json.dumps(dict(address=addr))
-    full = "{lat}, {lon} = {geohash} {raw}".format(lat=lat, lon=lon, geohash=geohash, raw=raw)
+    full = "{lat}, {lon} = {geohash} cached={ca} {raw}".format(lat=lat, lon=lon, geohash=geohash, raw=raw, ca=ca)
+    full = "{geohash} cached={ca} {lat}, {lon} {raw}".format(lat=lat, lon=lon, geohash=geohash, raw=raw, ca=ca)
 
     print raw
 
