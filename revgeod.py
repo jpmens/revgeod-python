@@ -48,7 +48,7 @@ def rev():
             #geolocator = GoogleV3(timeout=5, api_key=apikey)
             #address, (latitude, longitude) = geolocator.reverse(p, exactly_one=True)
 
-            address = geocoder.reverse_geocode(lat, lon)
+            address = geocoder.reverse_geocode(lat, lon, no_record=1, limit=1)
 
             # print "LOC====",json.dumps(address, indent=4)
 
