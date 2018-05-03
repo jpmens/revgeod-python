@@ -1,5 +1,6 @@
 geohash
-geopy
+# geopy
+opencage
 bottle
 redis
 paho-mqtt

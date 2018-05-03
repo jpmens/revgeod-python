@@ -5,15 +5,19 @@ import os
 from bottle import run, request, route, get
 import bottle
 import Geohash
-from geopy.geocoders import Nominatim
-from geopy.geocoders import GoogleV3
-from geopy.point import Point
+#from geopy.geocoders import Nominatim
+#from geopy.geocoders import GoogleV3
+#from geopy.point import Point
+from opencage.geocoder import OpenCageGeocode
 import redis
 import paho.mqtt.publish as mqtt
 from creds import *
 
 reverse_timeout = 4
-precision = 7
+precision = 8
+
+geocoder = OpenCageGeocode(apikey)  # from creds.py
+
 
 bottle.debug(True)
 
@@ -39,14 +43,16 @@ def rev():
     print key, val
     if val is None:
         try:
-            p = Point(lat, lon)
-            # geolocator = Nominatim(timeout=2)
-            geolocator = GoogleV3(timeout=5, api_key=apikey)
-            address, (latitude, longitude) = geolocator.reverse(p, exactly_one=True)
+            #p = Point(lat, lon)
+            ## geolocator = Nominatim(timeout=2)
+            #geolocator = GoogleV3(timeout=5, api_key=apikey)
+            #address, (latitude, longitude) = geolocator.reverse(p, exactly_one=True)
 
-            print "LOC====",json.dumps(address)
+            address = geocoder.reverse_geocode(lat, lon)
 
-            village = address
+            # print "LOC====",json.dumps(address, indent=4)
+
+            village = address[0]['formatted']
 
             r.set(key, json.dumps(address))
         except Exception as e:
@@ -57,7 +63,7 @@ def rev():
         raw = json.loads(val)
         if raw:
             cached = True
-            village = raw
+            village = raw[0]['formatted']
         else:
             village = "{%s}" % (key)    # enclose in curly braces so that users *see* it's a token
     
